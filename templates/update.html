@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Student - Student Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            min-height: 98vh;
+            background: linear-gradient(to bottom right, #fff7ed, #fef3c7);
+        }
+
+ 
+
+        /* Header Styles */
+        .header {
+            margin-bottom: 1rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: none;
+            position: fixed;
+            top: 20px;
+            left: 35px;
+            border-radius: 0.375rem;
+            color: #374151;
+            cursor: pointer;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .back-button:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .back-button svg {
+            margin-right: 0.5rem;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 10px;
+        }
+
+        .header-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            background-color: #ea580c;
+            border-radius: 0.5rem;
+        }
+
+        .header-icon svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: white;
+        }
+
+        .header-text h1 {
+            font-size: 1.875rem;
+            color: #111827;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-text p {
+            color: #4b5563;
+            font-size: 0.875rem;
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            max-width: 60vw;
+            overflow: hidden;
+            margin: 0 auto  ;
+        }
+
+        .card-header {
+            padding:10px 1.5rem 10px 1.5rem ;
+
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 0.5rem;
+            color: #166534;
+        }
+
+        .success-message.show {
+            display: flex;
+        }
+
+        .success-message svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        /* No Student State */
+        .no-student-state {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .no-student-state p {
+            color: #4b5563;
+            margin-bottom: 1rem;
+        }
+
+        /* Form Styles */
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .input {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: #ea580c;
+            box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.1);
+        }
+
+        .input.error {
+            border-color: #ef4444;
+        }
+
+        .input.error:focus {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .error-message {
+            font-size: 0.875rem;
+            color: #ef4444;
+        }
+
+        /* Button Styles */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .button {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button-primary {
+            flex: 1;
+            background-color: #ea580c;
+            color: white;
+        }
+
+        .button-primary:hover {
+            background-color: #c2410c;
+        }
+
+        .button-primary svg {
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+        }
+
+        .button-secondary {
+            padding: 0.5rem 1rem;
+            background-color: white;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .button-secondary:hover {
+            background-color: #f9fafb;
+        }
+
+        .button-center {
+            display: inline-flex;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+
+        <!-- Update Form -->
+        <div id="updateForm">
+            <!-- Header -->
+            <div class="header">
+                <button class="back-button" onclick="window.location.href = '/students'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back to Students List
+                </button>
+                <div class="header-content">
+                    <div class="header-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                    </div>
+                    <div class="header-text">
+                        <h1>Update Student</h1>
+                        <p>Modify the student information below</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Card -->
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Student Information</h2>
+                    <p class="card-description">Update the details of the student</p>
+                </div>
+                <div class="card-content">
+
+
+                    <!-- Form -->
+                    <form id="studentForm" class="form" action="/update_student" method="post">
+                        
+                        <!--id input -->
+                        <input type="hidden" name="id" value="{{ student.id }}">
+                        <input type="hidden" name="update" value="true">
+                        <!-- Name Field -->
+                        <div class="form-group">
+                            <label for="name" class="label">Name *</label>
+                            <input
+                                type="text"
+                                id="name"
+                                class="input"
+                                placeholder="Enter student name"
+                                name="name"
+                                value="{{student.name}}"
+                            >
+                            <span id="nameError" class="error-message"></span>
+                        </div>
+
+                        <!-- Email Field -->
+                        <div class="form-group">
+                            <label for="email" class="label">Email *</label>
+                            <input
+                                type="email"
+                                id="email"
+                                class="input"
+                                placeholder="Enter student email"
+                                name="email"
+                                value="{{student.email}}"
+                            >
+                            <span id="emailError" class="error-message"></span>
+                        </div>
+
+                        <!-- Age Field -->
+                        <div class="form-group">
+                            <label for="age" class="label">Age *</label>
+                            <input
+                                type="number"
+                                id="age"
+                                class="input"
+                                placeholder="Enter student age"
+                                name="age"
+                                value="{{student.age}}"
+                            >
+                            <span id="ageError" class="error-message"></span>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="button-group">
+                            <button type="submit" class="button button-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                    <polyline points="7 3 7 8 15 8"></polyline>
+                                </svg>
+                                Update Student
+                            </button>
+                            <button type="button" class="button button-secondary" onclick="window.location.href = '/students'">
+                                Cancel
+                            </button>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get form elements
+const form = document.getElementById('studentForm');
+const nameInput = document.getElementById('name');
+const emailInput = document.getElementById('email');
+const ageInput = document.getElementById('age');
+
+// Get error message elements
+const nameError = document.getElementById('nameError');
+const emailError = document.getElementById('emailError');
+const ageError = document.getElementById('ageError');
+
+// Clear error when user starts typing
+function clearError(fieldName) {
+    if (fieldName === 'name') {
+        nameInput.classList.remove('error');
+        nameError.textContent = '';
+    } else if (fieldName === 'email') {
+        emailInput.classList.remove('error');
+        emailError.textContent = '';
+    } else if (fieldName === 'age') {
+        ageInput.classList.remove('error');
+        ageError.textContent = '';
+    }
+}
+
+// Validate name field
+function validateName() {
+    const name = nameInput.value.trim();
+    
+    // Check if name is empty
+    if (!name) {
+        nameInput.classList.add('error');
+        nameError.textContent = 'Name is required';
+        return false;
+    }
+    
+    // Check if name contains only letters and spaces
+    if (!/^[a-zA-Z ]+$/.test(name)) {
+        nameInput.classList.add('error');
+        nameError.textContent = 'Please enter a valid name';
+        return false;
+    }
+    
+    return true;
+}
+
+// Validate email field
+function validateEmail() {
+    const email = emailInput.value.trim();
+    
+    // Check if email is empty
+    if (!email) {
+        emailInput.classList.add('error');
+        emailError.textContent = 'Email is required';
+        return false;
+    }
+    
+    // Check if email format is valid
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        emailInput.classList.add('error');
+        emailError.textContent = 'Please enter a valid email';
+        return false;
+    }
+    
+    return true;
+}
+
+// Validate age field
+function validateAge() {
+    const age = ageInput.value;
+    
+    // Check if age is empty
+    if (!age) {
+        ageInput.classList.add('error');
+        ageError.textContent = 'Age is required';
+        return false;
+    }
+    
+    // Check if age is between 1 and 100
+    const ageNumber = parseInt(age);
+    if (ageNumber < 1 || ageNumber > 100) {
+        ageInput.classList.add('error');
+        ageError.textContent = 'Please enter a valid age (1-100)';
+        return false;
+    }
+    
+    return true;
+}
+
+// Validate entire form
+function validateForm() {
+    // Clear all errors first
+    clearError('name');
+    clearError('email');
+    clearError('age');
+    
+    // Validate all fields
+    const nameValid = validateName();
+    const emailValid = validateEmail();
+    const ageValid = validateAge();
+    
+    // Return true only if all fields are valid
+    return nameValid && emailValid && ageValid;
+}
+
+// Add event listeners to clear errors when user types
+nameInput.addEventListener('input', () => clearError('name'));
+emailInput.addEventListener('input', () => clearError('email'));
+ageInput.addEventListener('input', () => clearError('age'));
+
+// Handle form submission
+form.addEventListener('submit', function(e) {
+    // Prevent form submission if validation fails
+    if (!validateForm()) {
+        e.preventDefault();
+    }
+});
+    </script>
+</body>
+</html>
